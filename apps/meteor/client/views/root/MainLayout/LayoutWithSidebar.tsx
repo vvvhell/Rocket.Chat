@@ -1,10 +1,12 @@
 import { Box } from '@rocket.chat/fuselage';
+import { FeaturePreview, FeaturePreviewOff, FeaturePreviewOn } from '@rocket.chat/ui-client';
 import { useLayout, useSetting, useCurrentModal, useRoute, useCurrentRoutePath } from '@rocket.chat/ui-contexts';
 import { PaletteStyleTag } from '@rocket.chat/ui-theming/src/PaletteStyleTag';
 import { SidebarPaletteStyleTag } from '@rocket.chat/ui-theming/src/SidebarPaletteStyleTag';
 import type { ReactElement, ReactNode } from 'react';
 import React, { useEffect, useRef } from 'react';
 
+import Navbar from '../../../navbar';
 import Sidebar from '../../../sidebar';
 
 const LayoutWithSidebar = ({ children }: { children: ReactNode }): ReactElement => {
