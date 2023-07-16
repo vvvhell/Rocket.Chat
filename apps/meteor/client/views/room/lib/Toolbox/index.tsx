@@ -7,9 +7,7 @@ import type { ToolboxContextValue } from '../../contexts/ToolboxContext';
 import type { Events as GeneratorEvents } from './generator';
 import { generator } from './generator';
 
-type ToolboxHook = ({ room }: { room: IRoom }) => ToolboxActionConfig | null;
-
-type ActionRendererProps = Omit<ToolboxActionConfig, 'renderAction' | 'groups' | 'title'> & {
+type ActionRendererProps = Omit<ToolboxAction, 'renderAction' | 'groups' | 'title'> & {
 	className?: ComponentProps<typeof Box>['className'];
 	index: number;
 	title: string;
@@ -21,7 +19,7 @@ type OptionRendererProps = ComponentProps<typeof Option>;
 
 export type OptionRenderer = (props: OptionRendererProps) => ReactNode;
 
-export type ToolboxActionConfig = {
+export type ToolboxAction = {
 	'id': string;
 	'icon'?: ComponentProps<typeof Icon>['name'];
 	'title': TranslationKey;
@@ -43,8 +41,6 @@ export type ToolboxActionConfig = {
 	}>;
 	'featured'?: boolean;
 };
-
-export type ToolboxAction = ToolboxHook | ToolboxActionConfig;
 
 const { listen, add: addAction, remove: deleteAction, store: actions } = generator<ToolboxAction>();
 
