@@ -4,12 +4,12 @@ import { lazy, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import otr from '../../../app/otr/client/OTR';
-import { ui } from '../../lib/ui';
 import { useRoom } from '../../views/room/contexts/RoomContext';
+import type { ToolboxAction } from '../../views/room/lib/Toolbox';
 
 const OTR = lazy(() => import('../../views/room/contextualBar/OTR'));
 
-export const useOTRRoomAction = () => {
+export const useOTRRoomAction = (): ToolboxAction | undefined => {
 	const enabled = useSetting('OTR_Enable', false);
 	const room = useRoom();
 	const federated = isRoomFederated(room);
@@ -20,23 +20,21 @@ export const useOTRRoomAction = () => {
 		otr.setEnabled(enabled && capable);
 	}, [enabled, capable]);
 
-	useEffect(() => {
-		if (!enabled || !capable) {
-			return;
-		}
+	if (!enabled || !capable) {
+		return undefined;
+	}
 
-		return ui.addRoomAction('otr', {
-			groups: ['direct'],
-			id: 'otr',
-			title: 'OTR',
-			icon: 'stopwatch',
-			template: OTR,
-			order: 13,
-			full: true,
-			...(federated && {
-				tooltip: t('core.OTR_unavailable_for_federation'),
-				disabled: true,
-			}),
-		});
-	}, [capable, enabled, federated, t]);
+	return {
+		id: 'otr',
+		groups: ['direct'],
+		title: 'OTR',
+		icon: 'stopwatch',
+		template: OTR,
+		order: 13,
+		full: true,
+		...(federated && {
+			tooltip: t('core.OTR_unavailable_for_federation'),
+			disabled: true,
+		}),
+	};
 };

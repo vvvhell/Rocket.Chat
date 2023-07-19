@@ -1,18 +1,16 @@
-import { lazy, useEffect } from 'react';
+import { lazy } from 'react';
 
-import { ui } from '../../lib/ui';
+import type { ToolboxAction } from '../../views/room/lib/Toolbox';
 
 const CallsContextualBarRoom = lazy(() => import('../../views/omnichannel/directory/calls/contextualBar/CallsContextualBarRoom'));
 
-export const useVoIPRoomInfoRoomAction = () => {
-	useEffect(() => {
-		return ui.addRoomAction('voip-room-info', {
-			groups: ['voip'],
-			id: 'voip-room-info',
-			title: 'Call_Information',
-			icon: 'info-circled',
-			template: CallsContextualBarRoom,
-			order: 0,
-		});
-	}, []);
+export const useVoIPRoomInfoRoomAction = (): ToolboxAction => {
+	return {
+		id: 'voip-room-info',
+		groups: ['voip'],
+		title: 'Call_Information',
+		icon: 'info-circled',
+		template: CallsContextualBarRoom,
+		order: 0,
+	};
 };

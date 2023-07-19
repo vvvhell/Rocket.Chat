@@ -1,13 +1,13 @@
 import { isRoomFederated } from '@rocket.chat/core-typings';
 import { useSetting } from '@rocket.chat/ui-contexts';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { sdk } from '../../../app/utils/client/lib/SDKClient';
-import { ui } from '../../lib/ui';
 import { useRoom } from '../../views/room/contexts/RoomContext';
+import type { ToolboxAction } from '../../views/room/lib/Toolbox';
 
-export const useWebRTCVideoRoomAction = () => {
+export const useWebRTCVideoRoomAction = (): ToolboxAction | undefined => {
 	const enabled = useSetting('WebRTC_Enabled', false);
 	const room = useRoom();
 	const federated = isRoomFederated(room);
@@ -24,23 +24,21 @@ export const useWebRTCVideoRoomAction = () => {
 		window.open(`/meet/${room._id}`, room._id);
 	}, [room._id, room.callStatus]);
 
-	useEffect(() => {
-		if (!allowed) {
-			return;
-		}
+	if (!allowed) {
+		return undefined;
+	}
 
-		return ui.addRoomAction('webRTCVideo', {
-			groups: ['live'],
-			id: 'webRTCVideo',
-			title: 'WebRTC_Call',
-			icon: 'phone',
-			...(federated && {
-				tooltip: t('core.Call_unavailable_for_federation'),
-				disabled: true,
-			}),
-			action: () => void handleClick(),
-			full: true,
-			order: 4,
-		});
-	}, [allowed, federated, handleClick, t]);
+	return {
+		id: 'webRTCVideo',
+		groups: ['live'],
+		title: 'WebRTC_Call',
+		icon: 'phone',
+		...(federated && {
+			tooltip: t('core.Call_unavailable_for_federation'),
+			disabled: true,
+		}),
+		action: () => void handleClick(),
+		full: true,
+		order: 4,
+	};
 };

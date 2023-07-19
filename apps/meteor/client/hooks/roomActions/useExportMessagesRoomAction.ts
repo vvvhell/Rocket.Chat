@@ -1,29 +1,27 @@
 import { usePermission } from '@rocket.chat/ui-contexts';
-import { lazy, useEffect } from 'react';
+import { lazy } from 'react';
 
-import { ui } from '../../lib/ui';
 import { useRoom } from '../../views/room/contexts/RoomContext';
+import type { ToolboxAction } from '../../views/room/lib/Toolbox';
 
 const ExportMessages = lazy(() => import('../../views/room/contextualBar/ExportMessages'));
 
-export const useExportMessagesRoomAction = () => {
+export const useExportMessagesRoomAction = (): ToolboxAction | undefined => {
 	const room = useRoom();
 	const permitted = usePermission('mail-messages', room._id);
 
-	useEffect(() => {
-		if (!permitted) {
-			return;
-		}
+	if (!permitted) {
+		return undefined;
+	}
 
-		return ui.addRoomAction('export-messages', {
-			groups: ['channel', 'group', 'direct', 'direct_multiple', 'team'],
-			id: 'export-messages',
-			anonymous: true,
-			title: 'Export_Messages',
-			icon: 'mail',
-			template: ExportMessages,
-			full: true,
-			order: 12,
-		});
-	}, [permitted]);
+	return {
+		id: 'export-messages',
+		groups: ['channel', 'group', 'direct', 'direct_multiple', 'team'],
+		anonymous: true,
+		title: 'Export_Messages',
+		icon: 'mail',
+		template: ExportMessages,
+		full: true,
+		order: 12,
+	};
 };

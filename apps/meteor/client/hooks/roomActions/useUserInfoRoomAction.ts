@@ -1,17 +1,13 @@
-import { useEffect } from 'react';
-
-import { ui } from '../../lib/ui';
 import { MemberListRouter } from '../../views/room';
+import type { ToolboxAction } from '../../views/room/lib/Toolbox';
 
-export const useUserInfoRoomAction = () => {
-	useEffect(() => {
-		return ui.addRoomAction('user-info', {
-			groups: ['direct'],
-			id: 'user-info',
-			title: 'User_Info',
-			icon: 'user',
-			template: MemberListRouter,
-			order: 1,
-		});
-	}, []);
+export const useUserInfoRoomAction = (): ToolboxAction => {
+	return {
+		id: 'user-info',
+		groups: ['direct'],
+		title: 'User_Info',
+		icon: 'user',
+		template: MemberListRouter,
+		order: 1,
+	};
 };

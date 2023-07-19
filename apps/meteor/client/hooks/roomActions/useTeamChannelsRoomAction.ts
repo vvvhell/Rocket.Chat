@@ -1,20 +1,18 @@
-import { lazy, useEffect } from 'react';
+import { lazy } from 'react';
 
-import { ui } from '../../lib/ui';
+import type { ToolboxAction } from '../../views/room/lib/Toolbox';
 
 const TeamsChannels = lazy(() => import('../../views/teams/contextualBar/channels/TeamsChannels'));
 
-export const useTeamChannelsRoomAction = () => {
-	useEffect(() => {
-		return ui.addRoomAction('team-channels', {
-			groups: ['team'],
-			id: 'team-channels',
-			anonymous: true,
-			full: true,
-			title: 'Team_Channels',
-			icon: 'hash',
-			template: TeamsChannels,
-			order: 2,
-		});
-	}, []);
+export const useTeamChannelsRoomAction = (): ToolboxAction => {
+	return {
+		id: 'team-channels',
+		groups: ['team'],
+		anonymous: true,
+		full: true,
+		title: 'Team_Channels',
+		icon: 'hash',
+		template: TeamsChannels,
+		order: 2,
+	};
 };

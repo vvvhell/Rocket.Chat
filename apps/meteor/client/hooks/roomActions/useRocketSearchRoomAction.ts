@@ -1,18 +1,16 @@
-import { lazy, useEffect } from 'react';
+import { lazy } from 'react';
 
-import { ui } from '../../lib/ui';
+import type { ToolboxAction } from '../../views/room/lib/Toolbox';
 
 const MessageSearchTab = lazy(() => import('../../views/room/contextualBar/MessageSearchTab'));
 
-export const useRocketSearchRoomAction = () => {
-	useEffect(() => {
-		return ui.addRoomAction('rocket-search', {
-			groups: ['channel', 'group', 'direct', 'direct_multiple', 'live', 'team'],
-			id: 'rocket-search',
-			title: 'Search_Messages',
-			icon: 'magnifier',
-			template: MessageSearchTab,
-			order: 6,
-		});
-	}, []);
+export const useRocketSearchRoomAction = (): ToolboxAction => {
+	return {
+		id: 'rocket-search',
+		groups: ['channel', 'group', 'direct', 'direct_multiple', 'live', 'team'],
+		title: 'Search_Messages',
+		icon: 'magnifier',
+		template: MessageSearchTab,
+		order: 6,
+	};
 };
